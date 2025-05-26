@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = 'docker-hub-creds'
-        IMAGE_NAME = 'faizan2203/todo-application:latest'
-        GIT_REPO = 'https://github.com/Faizan-shariff/todo-application.git'
+        DOCKERHUB_CREDENTIALS: 'docker-hub-creds'
+        IMAGE_NAME: 'faizan2203/todo-application:latest'
+        GIT_REPO: 'https://github.com/Faizan-shariff/todo-application.git'
     }
 
     stages {
@@ -37,13 +37,13 @@ pipeline {
         }
         stage('Deploy with Docker Compose') {
             steps {
-                bat 'docker-compose down || true'
+                bat 'docker-compose down || exit /B 0'
                 bat 'docker-compose up -d'
             }
         }
         stage('Clean Workspace') {
             steps {
-                bat 'rm -rf *'
+                bat 'del /q /f *.* & for /d %%x in (*) do @rmdir /s /q "%%x"'
             }
         }
     }
