@@ -37,8 +37,8 @@ pipeline {
         }
         stage('Deploy with Docker Compose') {
             steps {
-                bat 'docker-compose down || exit /B 0'
-                bat 'docker-compose up -d'
+                bat 'docker compose down || exit /B 0'
+                bat 'docker compose up -d'
             }
         }
         stage('Clean Workspace') {

@@ -5,7 +5,7 @@ services:
     image: todo-application-image:latest
     container_name: todo-application
     ports:
-      -8082:8081
+      - "8082:8081"
     depends_on:
       - mysql-db
     networks:
@@ -19,9 +19,9 @@ services:
       - MYSQL_USER: root
       - MYSQL_PASSWORD: Nuvelabs123$
     ports:
-      -3307:3306
+      - "3307:3306"
     volumes:
-      -mysql-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     networks:
       - todo-network
 volumes:
