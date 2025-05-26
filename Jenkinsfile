@@ -13,38 +13,38 @@ pipeline {
                 git url: "${GIT_REPO}", branch: 'master', credentialsId: 'Github-creds'  // Use credentials if private repo
             }
         }
-        stage('Build with Maven') {
-            steps {
-                // Using maven container or assume maven is installed on agent
-                sh 'mvn clean package -DskipTests'
-            }
-        }
-        stage('Build Docker Image') {
-            steps {
-                sh "docker build -t ${IMAGE_NAME} ."
-            }
-        }
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh '''
-                        echo $PASSWORD | docker login -u $USERNAME --password-stdin
-                        docker push ${IMAGE_NAME}
-                        docker logout
-                    '''
-                }
-            }
-        }
-        stage('Deploy with Docker Compose') {
-            steps {
-                sh 'docker-compose down || true'
-                sh 'docker-compose up -d'
-            }
-        }
-        stage('Clean Workspace') {
-            steps {
-                sh 'rm -rf *'
-            }
-        }
+        // stage('Build with Maven') {
+        //     steps {
+        //         // Using maven container or assume maven is installed on agent
+        //         sh 'mvn clean package -DskipTests'
+        //     }
+        // }
+        // stage('Build Docker Image') {
+        //     steps {
+        //         sh "docker build -t ${IMAGE_NAME} ."
+        //     }
+        // }
+        // stage('Push Docker Image') {
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        //             sh '''
+        //                 echo $PASSWORD | docker login -u $USERNAME --password-stdin
+        //                 docker push ${IMAGE_NAME}
+        //                 docker logout
+        //             '''
+        //         }
+        //     }
+        // }
+        // stage('Deploy with Docker Compose') {
+        //     steps {
+        //         sh 'docker-compose down || true'
+        //         sh 'docker-compose up -d'
+        //     }
+        // }
+        // stage('Clean Workspace') {
+        //     steps {
+        //         sh 'rm -rf *'
+        //     }
+        // }
     }
 }
