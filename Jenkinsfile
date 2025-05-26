@@ -1,7 +1,50 @@
-checkout([$class: 'GitSCM',
-    userRemoteConfigs:[[ 
-        url: 'https://github.com/Faizan-shariff/todo-application.git',
-        credentialsId: 'faizid'
-    ]],
-    branches: [[name: '*/master']]
-])
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = 'docker-hub-credentials'
+        IMAGE_NAME = 'yourdockerhubusername/todo-application:latest'
+        GIT_REPO = 'https://github.com/yourusername/todo-application.git'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: "${GIT_REPO}", branch: 'master', credentialsId: 'github-credentials'  // Use credentials if private repo
+            }
+        }
+        stage('Build with Maven') {
+            steps {
+                // Using maven container or assume maven is installed on agent
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t ${IMAGE_NAME} ."
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh '''
+                        echo $PASSWORD | docker login -u $USERNAME --password-stdin
+                        docker push ${IMAGE_NAME}
+                        docker logout
+                    '''
+                }
+            }
+        }
+        stage('Deploy with Docker Compose') {
+            steps {
+                sh 'docker-compose down || true'
+                sh 'docker-compose up -d'
+            }
+        }
+        stage('Clean Workspace') {
+            steps {
+                sh 'rm -rf *'
+            }
+        }
+    }
+}
