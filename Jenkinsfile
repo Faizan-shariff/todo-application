@@ -2,15 +2,15 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = 'docker-hub-credentials'
-        IMAGE_NAME = 'yourdockerhubusername/todo-application:latest'
-        GIT_REPO = 'https://github.com/yourusername/todo-application.git'
+        DOCKERHUB_CREDENTIALS = 'docker-hub-creds'
+        IMAGE_NAME = 'faizan2203/todo-application:latest'
+        GIT_REPO = 'https://github.com/Faizan-shariff/todo-application.git'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git url: "${GIT_REPO}", branch: 'master', credentialsId: 'github-credentials'  // Use credentials if private repo
+                git url: "${GIT_REPO}", branch: 'master', credentialsId: 'github-creds'  // Use credentials if private repo
             }
         }
         stage('Build with Maven') {
