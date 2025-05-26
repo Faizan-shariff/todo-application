@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS: 'docker-hub-creds'
-        IMAGE_NAME: 'faizan2203/todo-application:latest'
-        GIT_REPO: 'https://github.com/Faizan-shariff/todo-application.git'
+        DOCKERHUB_CREDENTIALS = 'docker-hub-creds'
+        IMAGE_NAME = 'faizan2203/todo-application:latest'
+        GIT_REPO = 'https://github.com/Faizan-shariff/todo-application.git'
     }
 
     stages {
