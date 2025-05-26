@@ -13,12 +13,12 @@ pipeline {
                 git url: "${GIT_REPO}", branch: 'master', credentialsId: 'Github-creds'  // Use credentials if private repo
             }
         }
-        // stage('Build with Maven') {
-        //     steps {
-        //         // Using maven container or assume maven is installed on agent
-        //         sh 'mvn clean package -DskipTests'
-        //     }
-        // }
+        stage('Build with Maven') {
+            steps {
+                // Using maven container or assume maven is installed on agent
+                bat 'mvn clean package -DskipTests'
+            }
+        }
         // stage('Build Docker Image') {
         //     steps {
         //         sh "docker build -t ${IMAGE_NAME} ."
