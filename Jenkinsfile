@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: "${GIT_REPO}", branch: 'master', credentialsId: 'github-creds'  // Use credentials if private repo
+                git url: "${GIT_REPO}", branch: 'master', credentialsId: 'Github-creds'  // Use credentials if private repo
             }
         }
         stage('Build with Maven') {
