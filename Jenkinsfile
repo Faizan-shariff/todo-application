@@ -19,32 +19,32 @@ pipeline {
                 bat 'mvn clean package -DskipTests'
             }
         }
-        // stage('Build Docker Image') {
-        //     steps {
-        //         sh "docker build -t ${IMAGE_NAME} ."
-        //     }
-        // }
-        // stage('Push Docker Image') {
-        //     steps {
-        //         withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        //             sh '''
-        //                 echo $PASSWORD | docker login -u $USERNAME --password-stdin
-        //                 docker push ${IMAGE_NAME}
-        //                 docker logout
-        //             '''
-        //         }
-        //     }
-        // }
-        // stage('Deploy with Docker Compose') {
-        //     steps {
-        //         sh 'docker-compose down || true'
-        //         sh 'docker-compose up -d'
-        //     }
-        // }
-        // stage('Clean Workspace') {
-        //     steps {
-        //         sh 'rm -rf *'
-        //     }
-        // }
+        stage('Build Docker Image') {
+            steps {
+                bat "docker build -t ${IMAGE_NAME} ."
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    bat '''
+                        echo $PASSWORD | docker login -u $USERNAME --password-stdin
+                        docker push ${IMAGE_NAME}
+                        docker logout
+                    '''
+                }
+            }
+        }
+        stage('Deploy with Docker Compose') {
+            steps {
+                bat 'docker-compose down || true'
+                bat 'docker-compose up -d'
+            }
+        }
+        stage('Clean Workspace') {
+            steps {
+                bat 'rm -rf *'
+            }
+        }
     }
 }
