@@ -28,7 +28,6 @@
 # networks:
 #   todo-network:
 #     driver: bridge
-version: "3.8"
 
 services:
   mysql-db:
